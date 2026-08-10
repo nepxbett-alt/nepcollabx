@@ -1,0 +1,17 @@
+{
+  "name": "NepCollab — Creator Collaboration Marketplace",
+  "short_name": "NepCollab",
+  "description": "Brands post campaigns. Creators discover opportunities and apply.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1b1c26",
+  "theme_color": "#1b1c26",
+  "icons": [
+    {
+      "src": "/app-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
