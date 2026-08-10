@@ -22,6 +22,7 @@ import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns.$cam
 import { Route as CollaborationsIndexRouteImport } from './routes/collaborations.index'
 import { Route as CollaborationsCollabIdRouteImport } from './routes/collaborations.$collabId'
 import { Route as BrandCampaignsIndexRouteImport } from './routes/brand.campaigns.index'
+import { Route as BrandCampaignsNewRouteImport } from './routes/brand.campaigns.new'
 import { Route as CampaignsCampaignIdApplyRouteImport } from './routes/campaigns.$campaignId.apply'
 
 const IndexRoute = IndexRouteImport.update({
@@ -89,6 +90,11 @@ const BrandCampaignsIndexRoute = BrandCampaignsIndexRouteImport.update({
   path: '/brand/campaigns/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrandCampaignsNewRoute = BrandCampaignsNewRouteImport.update({
+  id: '/brand/campaigns/new',
+  path: '/brand/campaigns/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CampaignsCampaignIdApplyRoute =
   CampaignsCampaignIdApplyRouteImport.update({
     id: '/apply',
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns/': typeof CampaignsIndexRoute
   '/collaborations/': typeof CollaborationsIndexRoute
+  '/brand/campaigns/new': typeof BrandCampaignsNewRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
   '/brand/campaigns/': typeof BrandCampaignsIndexRoute
 }
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns': typeof CampaignsIndexRoute
   '/collaborations': typeof CollaborationsIndexRoute
+  '/brand/campaigns/new': typeof BrandCampaignsNewRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
   '/brand/campaigns': typeof BrandCampaignsIndexRoute
 }
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns/': typeof CampaignsIndexRoute
   '/collaborations/': typeof CollaborationsIndexRoute
+  '/brand/campaigns/new': typeof BrandCampaignsNewRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
   '/brand/campaigns/': typeof BrandCampaignsIndexRoute
 }
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/collaborations/$collabId'
     | '/campaigns/'
     | '/collaborations/'
+    | '/brand/campaigns/new'
     | '/campaigns/$campaignId/apply'
     | '/brand/campaigns/'
   fileRoutesByTo: FileRoutesByTo
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/collaborations/$collabId'
     | '/campaigns'
     | '/collaborations'
+    | '/brand/campaigns/new'
     | '/campaigns/$campaignId/apply'
     | '/brand/campaigns'
   id:
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/collaborations/$collabId'
     | '/campaigns/'
     | '/collaborations/'
+    | '/brand/campaigns/new'
     | '/campaigns/$campaignId/apply'
     | '/brand/campaigns/'
   fileRoutesById: FileRoutesById
@@ -209,6 +221,7 @@ export interface RootRouteChildren {
   CollaborationsCollabIdRoute: typeof CollaborationsCollabIdRoute
   CampaignsIndexRoute: typeof CampaignsIndexRoute
   CollaborationsIndexRoute: typeof CollaborationsIndexRoute
+  BrandCampaignsNewRoute: typeof BrandCampaignsNewRoute
   BrandCampaignsIndexRoute: typeof BrandCampaignsIndexRoute
 }
 
@@ -305,6 +318,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrandCampaignsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brand/campaigns/new': {
+      id: '/brand/campaigns/new'
+      path: '/brand/campaigns/new'
+      fullPath: '/brand/campaigns/new'
+      preLoaderRoute: typeof BrandCampaignsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/campaigns/$campaignId/apply': {
       id: '/campaigns/$campaignId/apply'
       path: '/apply'
@@ -339,6 +359,7 @@ const rootRouteChildren: RootRouteChildren = {
   CollaborationsCollabIdRoute: CollaborationsCollabIdRoute,
   CampaignsIndexRoute: CampaignsIndexRoute,
   CollaborationsIndexRoute: CollaborationsIndexRoute,
+  BrandCampaignsNewRoute: BrandCampaignsNewRoute,
   BrandCampaignsIndexRoute: BrandCampaignsIndexRoute,
 }
 export const routeTree = rootRouteImport
