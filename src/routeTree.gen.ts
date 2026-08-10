@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CampaignsIndexRouteImport } from './routes/campaigns.index'
 import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns.$campaignId'
 import { Route as CampaignsCampaignIdApplyRouteImport } from './routes/campaigns.$campaignId.apply'
@@ -17,6 +20,21 @@ import { Route as CampaignsCampaignIdApplyRouteImport } from './routes/campaigns
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplicationsRoute = ApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampaignsIndexRoute = CampaignsIndexRouteImport.update({
@@ -38,12 +56,18 @@ const CampaignsCampaignIdApplyRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns/': typeof CampaignsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns': typeof CampaignsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
@@ -51,6 +75,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns/': typeof CampaignsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
@@ -59,18 +86,27 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/applications'
+    | '/auth'
+    | '/dashboard'
     | '/campaigns/$campaignId'
     | '/campaigns/'
     | '/campaigns/$campaignId/apply'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/applications'
+    | '/auth'
+    | '/dashboard'
     | '/campaigns/$campaignId'
     | '/campaigns'
     | '/campaigns/$campaignId/apply'
   id:
     | '__root__'
     | '/'
+    | '/applications'
+    | '/auth'
+    | '/dashboard'
     | '/campaigns/$campaignId'
     | '/campaigns/'
     | '/campaigns/$campaignId/apply'
@@ -78,6 +114,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApplicationsRoute: typeof ApplicationsRoute
+  AuthRoute: typeof AuthRoute
+  DashboardRoute: typeof DashboardRoute
   CampaignsCampaignIdRoute: typeof CampaignsCampaignIdRouteWithChildren
   CampaignsIndexRoute: typeof CampaignsIndexRoute
 }
@@ -89,6 +128,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/applications': {
+      id: '/applications'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof ApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campaigns/': {
@@ -128,19 +188,12 @@ const CampaignsCampaignIdRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApplicationsRoute: ApplicationsRoute,
+  AuthRoute: AuthRoute,
+  DashboardRoute: DashboardRoute,
   CampaignsCampaignIdRoute: CampaignsCampaignIdRouteWithChildren,
   CampaignsIndexRoute: CampaignsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
