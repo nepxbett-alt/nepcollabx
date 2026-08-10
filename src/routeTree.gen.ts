@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CampaignsIndexRouteImport } from './routes/campaigns.index'
+import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns.$campaignId'
+import { Route as CampaignsCampaignIdApplyRouteImport } from './routes/campaigns.$campaignId.apply'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +24,61 @@ const CampaignsIndexRoute = CampaignsIndexRouteImport.update({
   path: '/campaigns/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampaignsCampaignIdRoute = CampaignsCampaignIdRouteImport.update({
+  id: '/campaigns/$campaignId',
+  path: '/campaigns/$campaignId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampaignsCampaignIdApplyRoute =
+  CampaignsCampaignIdApplyRouteImport.update({
+    id: '/apply',
+    path: '/apply',
+    getParentRoute: () => CampaignsCampaignIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns/': typeof CampaignsIndexRoute
+  '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns': typeof CampaignsIndexRoute
+  '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
   '/campaigns/': typeof CampaignsIndexRoute
+  '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/campaigns/'
+  fullPaths:
+    | '/'
+    | '/campaigns/$campaignId'
+    | '/campaigns/'
+    | '/campaigns/$campaignId/apply'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/campaigns'
-  id: '__root__' | '/' | '/campaigns/'
+  to:
+    | '/'
+    | '/campaigns/$campaignId'
+    | '/campaigns'
+    | '/campaigns/$campaignId/apply'
+  id:
+    | '__root__'
+    | '/'
+    | '/campaigns/$campaignId'
+    | '/campaigns/'
+    | '/campaigns/$campaignId/apply'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CampaignsCampaignIdRoute: typeof CampaignsCampaignIdRouteWithChildren
   CampaignsIndexRoute: typeof CampaignsIndexRoute
 }
 
@@ -65,13 +98,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CampaignsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campaigns/$campaignId': {
+      id: '/campaigns/$campaignId'
+      path: '/campaigns/$campaignId'
+      fullPath: '/campaigns/$campaignId'
+      preLoaderRoute: typeof CampaignsCampaignIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campaigns/$campaignId/apply': {
+      id: '/campaigns/$campaignId/apply'
+      path: '/apply'
+      fullPath: '/campaigns/$campaignId/apply'
+      preLoaderRoute: typeof CampaignsCampaignIdApplyRouteImport
+      parentRoute: typeof CampaignsCampaignIdRoute
+    }
   }
 }
 
+interface CampaignsCampaignIdRouteChildren {
+  CampaignsCampaignIdApplyRoute: typeof CampaignsCampaignIdApplyRoute
+}
+
+const CampaignsCampaignIdRouteChildren: CampaignsCampaignIdRouteChildren = {
+  CampaignsCampaignIdApplyRoute: CampaignsCampaignIdApplyRoute,
+}
+
+const CampaignsCampaignIdRouteWithChildren =
+  CampaignsCampaignIdRoute._addFileChildren(CampaignsCampaignIdRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CampaignsCampaignIdRoute: CampaignsCampaignIdRouteWithChildren,
   CampaignsIndexRoute: CampaignsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
