@@ -13,8 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as CampaignsIndexRouteImport } from './routes/campaigns.index'
 import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns.$campaignId'
+import { Route as CollaborationsIndexRouteImport } from './routes/collaborations.index'
+import { Route as CollaborationsCollabIdRouteImport } from './routes/collaborations.$collabId'
 import { Route as CampaignsCampaignIdApplyRouteImport } from './routes/campaigns.$campaignId.apply'
 
 const IndexRoute = IndexRouteImport.update({
@@ -37,6 +41,16 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CampaignsIndexRoute = CampaignsIndexRouteImport.update({
   id: '/campaigns/',
   path: '/campaigns/',
@@ -45,6 +59,16 @@ const CampaignsIndexRoute = CampaignsIndexRouteImport.update({
 const CampaignsCampaignIdRoute = CampaignsCampaignIdRouteImport.update({
   id: '/campaigns/$campaignId',
   path: '/campaigns/$campaignId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollaborationsIndexRoute = CollaborationsIndexRouteImport.update({
+  id: '/collaborations/',
+  path: '/collaborations/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollaborationsCollabIdRoute = CollaborationsCollabIdRouteImport.update({
+  id: '/collaborations/$collabId',
+  path: '/collaborations/$collabId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampaignsCampaignIdApplyRoute =
@@ -59,8 +83,12 @@ export interface FileRoutesByFullPath {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
+  '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns/': typeof CampaignsIndexRoute
+  '/collaborations/': typeof CollaborationsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRoutesByTo {
@@ -68,8 +96,12 @@ export interface FileRoutesByTo {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
+  '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns': typeof CampaignsIndexRoute
+  '/collaborations': typeof CollaborationsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRoutesById {
@@ -78,8 +110,12 @@ export interface FileRoutesById {
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/messages': typeof MessagesRoute
+  '/notifications': typeof NotificationsRoute
   '/campaigns/$campaignId': typeof CampaignsCampaignIdRouteWithChildren
+  '/collaborations/$collabId': typeof CollaborationsCollabIdRoute
   '/campaigns/': typeof CampaignsIndexRoute
+  '/collaborations/': typeof CollaborationsIndexRoute
   '/campaigns/$campaignId/apply': typeof CampaignsCampaignIdApplyRoute
 }
 export interface FileRouteTypes {
@@ -89,8 +125,12 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/dashboard'
+    | '/messages'
+    | '/notifications'
     | '/campaigns/$campaignId'
+    | '/collaborations/$collabId'
     | '/campaigns/'
+    | '/collaborations/'
     | '/campaigns/$campaignId/apply'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -98,8 +138,12 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/dashboard'
+    | '/messages'
+    | '/notifications'
     | '/campaigns/$campaignId'
+    | '/collaborations/$collabId'
     | '/campaigns'
+    | '/collaborations'
     | '/campaigns/$campaignId/apply'
   id:
     | '__root__'
@@ -107,8 +151,12 @@ export interface FileRouteTypes {
     | '/applications'
     | '/auth'
     | '/dashboard'
+    | '/messages'
+    | '/notifications'
     | '/campaigns/$campaignId'
+    | '/collaborations/$collabId'
     | '/campaigns/'
+    | '/collaborations/'
     | '/campaigns/$campaignId/apply'
   fileRoutesById: FileRoutesById
 }
@@ -117,8 +165,12 @@ export interface RootRouteChildren {
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
+  MessagesRoute: typeof MessagesRoute
+  NotificationsRoute: typeof NotificationsRoute
   CampaignsCampaignIdRoute: typeof CampaignsCampaignIdRouteWithChildren
+  CollaborationsCollabIdRoute: typeof CollaborationsCollabIdRoute
   CampaignsIndexRoute: typeof CampaignsIndexRoute
+  CollaborationsIndexRoute: typeof CollaborationsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -151,6 +203,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/campaigns/': {
       id: '/campaigns/'
       path: '/campaigns'
@@ -163,6 +229,20 @@ declare module '@tanstack/react-router' {
       path: '/campaigns/$campaignId'
       fullPath: '/campaigns/$campaignId'
       preLoaderRoute: typeof CampaignsCampaignIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collaborations/': {
+      id: '/collaborations/'
+      path: '/collaborations'
+      fullPath: '/collaborations/'
+      preLoaderRoute: typeof CollaborationsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/collaborations/$collabId': {
+      id: '/collaborations/$collabId'
+      path: '/collaborations/$collabId'
+      fullPath: '/collaborations/$collabId'
+      preLoaderRoute: typeof CollaborationsCollabIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campaigns/$campaignId/apply': {
@@ -191,8 +271,12 @@ const rootRouteChildren: RootRouteChildren = {
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
+  MessagesRoute: MessagesRoute,
+  NotificationsRoute: NotificationsRoute,
   CampaignsCampaignIdRoute: CampaignsCampaignIdRouteWithChildren,
+  CollaborationsCollabIdRoute: CollaborationsCollabIdRoute,
   CampaignsIndexRoute: CampaignsIndexRoute,
+  CollaborationsIndexRoute: CollaborationsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
