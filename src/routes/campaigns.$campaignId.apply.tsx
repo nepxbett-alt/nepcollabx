@@ -74,10 +74,10 @@ function ApplyPage() {
         <ArrowLeft className="size-4" /> Back to campaign
       </button>
 
-      <h1 className="text-3xl font-bold">Apply to this campaign</h1>
+      <h1 className="text-xl font-bold">Apply to this campaign</h1>
       <p className="mt-1 text-sm text-muted-foreground">{campaign.title}</p>
 
-      <div className="mt-6 flex items-center gap-3 rounded-3xl border border-border bg-card p-4">
+      <div className="mt-6 flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
         <img
           src={creator?.avatar}
           alt={creator?.name}

@@ -3,6 +3,8 @@ import { Briefcase, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Container } from "@/components/AppShell";
+import { Logo } from "@/components/Logo";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,8 +41,10 @@ function AuthPage() {
   };
 
   return (
-    <Container className="max-w-md py-12">
-      <h1 className="text-3xl font-bold">Get started</h1>
+    <Container className="max-w-md py-10">
+      <Logo size={40} withWordmark={false} />
+      <h1 className="mt-4 text-xl font-bold">Get started</h1>
+
       <p className="mt-1 text-sm text-muted-foreground">
         Choose how you'll use NepCollab. You can explore the whole app either way.
       </p>
@@ -55,7 +59,7 @@ function AuthPage() {
             type="button"
             onClick={() => setRole(option.key)}
             className={cn(
-              "rounded-3xl border p-4 text-left transition-all",
+              "rounded-2xl border p-4 text-left transition-all",
               role === option.key
                 ? "border-signal bg-accent/60 shadow-sm"
                 : "border-border bg-card hover:border-foreground/30",

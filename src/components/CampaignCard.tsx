@@ -19,39 +19,39 @@ export function CampaignCard({
   const left = daysLeft(campaign.deadline);
 
   return (
-    <article className="group relative overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <article className="tap group relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm hover:shadow-md">
       <Link
         to="/campaigns/$campaignId"
         params={{ campaignId: campaign.id }}
         className="block"
       >
-        <div className="relative aspect-16/10 overflow-hidden">
+        <div className="relative aspect-16/9 overflow-hidden">
           <img
             src={campaign.cover}
             alt={`${campaign.title} campaign cover`}
             loading="lazy"
-            className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
           />
-          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink/80 to-transparent" />
-          <div className="absolute bottom-3 left-3 flex items-center gap-2">
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-ink/80 to-transparent" />
+          <div className="absolute bottom-2.5 left-3 flex items-center gap-2">
             <img
               src={brand?.logo}
               alt={`${brand?.name} logo`}
-              className="size-9 rounded-full border-2 border-card object-cover"
+              className="size-7 rounded-full border border-card/80 object-cover"
             />
-            <span className="text-sm font-semibold text-ink-foreground">
+            <span className="text-[13px] font-semibold text-ink-foreground">
               {brand?.name}
             </span>
           </div>
           {typeof match === "number" ? (
-            <span className="absolute right-3 top-3 rounded-full bg-signal px-2.5 py-1 text-xs font-bold text-signal-foreground">
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-signal px-2 py-0.5 text-[11px] font-bold text-signal-foreground">
               {match}% match
             </span>
           ) : null}
         </div>
 
-        <div className="space-y-3 p-4">
-          <h3 className="text-lg font-semibold leading-snug">
+        <div className="space-y-2.5 p-3.5">
+          <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug">
             {campaign.title}
           </h3>
 
@@ -59,25 +59,27 @@ export function CampaignCard({
             {campaign.types.slice(0, 3).map((t) => (
               <span
                 key={t}
-                className="rounded-full bg-secondary px-2.5 py-1 text-xs font-medium text-secondary-foreground"
+                className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-medium text-secondary-foreground"
               >
                 {t}
               </span>
             ))}
           </div>
 
-          <div className="flex items-start gap-2 rounded-2xl bg-accent/60 p-3 text-sm text-accent-foreground">
-            <Gift className="mt-0.5 size-4 shrink-0" />
-            <span className="font-medium">{campaign.perks.join(" · ")}</span>
+          <div className="flex items-start gap-2 rounded-xl bg-accent px-2.5 py-2 text-[12px] text-accent-foreground">
+            <Gift className="mt-px size-3.5 shrink-0" />
+            <span className="line-clamp-1 font-medium">
+              {campaign.perks.join(" · ")}
+            </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
             <span className="inline-flex items-center gap-1">
-              <MapPin className="size-3.5" />
+              <MapPin className="size-3" />
               {campaign.remote ? "Remote" : campaign.location}
             </span>
             <span className="inline-flex items-center gap-1">
-              <Users className="size-3.5" />
+              <Users className="size-3" />
               {campaign.creatorsNeeded} creators
             </span>
             <span
@@ -87,7 +89,7 @@ export function CampaignCard({
               )}
             >
               {left > 0
-                ? `${left} days left · closes ${formatDate(campaign.deadline)}`
+                ? `${left}d left · ${formatDate(campaign.deadline)}`
                 : "Closed"}
             </span>
           </div>
@@ -98,8 +100,9 @@ export function CampaignCard({
         <button
           type="button"
           aria-label={saved ? "Remove from saved" : "Save campaign"}
+          aria-pressed={saved}
           onClick={() => onToggleSave(campaign.id)}
-          className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-full bg-card/90 text-foreground backdrop-blur transition-colors hover:bg-card"
+          className="tap absolute right-2.5 top-2.5 flex size-8 items-center justify-center rounded-full bg-card/90 text-foreground backdrop-blur hover:bg-card"
         >
           <Bookmark className={cn("size-4", saved && "fill-current")} />
         </button>
@@ -107,3 +110,4 @@ export function CampaignCard({
     </article>
   );
 }
+

@@ -76,7 +76,7 @@ function Applicants() {
             const creator = getCreator(a.creatorId);
             const campaign = campaigns.find((c) => c.id === a.campaignId);
             return (
-              <li key={a.id} className="rounded-3xl border border-border bg-card p-5">
+              <li key={a.id} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-start gap-3">
                   <img src={creator?.avatar} alt={creator?.name} className="size-12 rounded-full object-cover" />
                   <div className="min-w-0 flex-1">

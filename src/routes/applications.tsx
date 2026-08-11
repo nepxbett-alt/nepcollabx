@@ -45,7 +45,7 @@ function Applications() {
             const campaign = campaigns.find((c) => c.id === a.campaignId);
             const brand = campaign ? getBrand(campaign.brandId) : undefined;
             return (
-              <li key={a.id} className="rounded-3xl border border-border bg-card p-5">
+              <li key={a.id} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <p className="text-xs text-muted-foreground">{brand?.name}</p>

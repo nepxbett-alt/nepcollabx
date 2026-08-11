@@ -25,7 +25,7 @@ function Profile() {
     return (
       <Container className="max-w-3xl">
         <PageHeader title="Brand profile" />
-        <div className="rounded-3xl border border-border bg-card p-6">
+        <div className="rounded-2xl border border-border bg-card p-6">
           <div className="flex items-center gap-4">
             <img src={brand?.logo} alt={brand?.name} className="size-16 rounded-2xl object-cover" />
             <div>
@@ -63,7 +63,7 @@ function Profile() {
   return (
     <Container className="max-w-3xl">
       <PageHeader title="Creator profile" />
-      <div className="rounded-3xl border border-border bg-card p-6">
+      <div className="rounded-2xl border border-border bg-card p-6">
         <div className="flex items-center gap-4">
           <img src={creator?.avatar} alt={creator?.name} className="size-16 rounded-full object-cover" />
           <div>

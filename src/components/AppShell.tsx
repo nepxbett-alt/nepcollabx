@@ -11,8 +11,10 @@ import {
   Users,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { Logo } from "@/components/Logo";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+
 
 const creatorNav = [
   { to: "/dashboard", label: "Home", icon: Home },
@@ -41,16 +43,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   ).length;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-xl bg-ink text-sm font-bold text-ink-foreground">
-              N
-            </span>
-            <span className="font-display text-lg font-bold tracking-tight">
-              NepCollab
-            </span>
+    <div className="flex min-h-dvh flex-col bg-background">
+      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4">
+          <Link to="/" className="flex min-w-0 items-center" aria-label="NepCollab home">
+            <Logo />
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
@@ -59,7 +56,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
+                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
                 >
                   {item.label}
                 </Link>
@@ -68,13 +65,13 @@ export function AppShell({ children }: { children: ReactNode }) {
               <>
                 <Link
                   to="/campaigns"
-                  className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 >
-                  Find campaigns
+                  Discover
                 </Link>
                 <Link
                   to="/auth"
-                  className="rounded-full px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
                 >
                   Post a campaign
                 </Link>
@@ -82,22 +79,22 @@ export function AppShell({ children }: { children: ReactNode }) {
             )}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1.5">
             {signedIn ? (
               <Link
                 to="/notifications"
                 aria-label="Notifications"
-                className="relative flex size-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary"
+                className="tap relative flex size-9 items-center justify-center rounded-full text-foreground hover:bg-secondary"
               >
-                <Bell className="size-5" />
+                <Bell className="size-[18px]" />
                 {unread > 0 ? (
-                  <span className="absolute right-1.5 top-1.5 size-2 rounded-full bg-signal" />
+                  <span className="absolute right-2 top-2 size-2 rounded-full bg-signal ring-2 ring-background" />
                 ) : null}
               </Link>
             ) : (
               <Link
                 to="/auth"
-                className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-ink-foreground transition-opacity hover:opacity-90"
+                className="tap rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold text-ink-foreground hover:opacity-90"
               >
                 Get started
               </Link>
@@ -106,10 +103,15 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1 pb-24 md:pb-10">{children}</main>
+      <main className="flex-1 pb-[calc(4.25rem+env(safe-area-inset-bottom))] md:pb-10">
+        {children}
+      </main>
 
       {signedIn ? (
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl md:hidden">
+        <nav
+          aria-label="Primary"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl md:hidden"
+        >
           <ul className="mx-auto flex max-w-lg items-stretch">
             {nav.map((item) => {
               const active =
@@ -119,12 +121,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <li key={item.to} className="flex-1">
                   <Link
                     to={item.to}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+                      "tap flex min-h-11 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium",
                       active ? "text-signal" : "text-muted-foreground",
                     )}
                   >
-                    <Icon className="size-5" />
+                    <Icon className={cn("size-[19px]", active && "stroke-[2.4]")} />
                     {item.label}
                   </Link>
                 </li>
@@ -148,11 +151,13 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4 pb-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-5">
+      <div className="min-w-0">
+        <h1 className="truncate text-xl font-bold tracking-tight sm:text-2xl">
+          {title}
+        </h1>
         {subtitle ? (
-          <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+          <p className="mt-0.5 text-[13px] text-muted-foreground">{subtitle}</p>
         ) : null}
       </div>
       {action}
@@ -168,8 +173,9 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-6xl px-4 py-6", className)}>
+    <div className={cn("mx-auto w-full max-w-6xl px-4 py-5", className)}>
       {children}
     </div>
   );
 }
+
