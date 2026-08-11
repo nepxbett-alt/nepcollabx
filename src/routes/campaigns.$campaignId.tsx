@@ -101,7 +101,7 @@ function CampaignDetail() {
               <p className="text-xs opacity-80">{brand?.category}</p>
             </div>
           </div>
-          <h1 className="mt-3 max-w-3xl text-2xl font-bold text-ink-foreground md:text-4xl">
+          <h1 className="mt-3 max-w-3xl text-xl font-bold text-ink-foreground md:text-3xl">
             {campaign.title}
           </h1>
         </Container>

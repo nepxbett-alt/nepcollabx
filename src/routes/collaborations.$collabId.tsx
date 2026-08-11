@@ -58,7 +58,7 @@ function Workspace() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-xs text-muted-foreground">{brand?.name}</p>
-            <h1 className="text-2xl font-bold">{campaign?.title}</h1>
+            <h1 className="text-xl font-bold">{campaign?.title}</h1>
           </div>
           <StatusBadge status={collab.status} />
         </div>

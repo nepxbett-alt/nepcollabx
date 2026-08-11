@@ -60,13 +60,13 @@ function Dashboard() {
             ["Collaborations", collaborations.length],
           ].map(([label, value]) => (
             <div key={String(label)} className="rounded-2xl border border-border bg-card p-4">
-              <p className="font-display text-2xl font-bold">{value}</p>
+              <p className="font-display text-lg font-bold">{value}</p>
               <p className="text-xs text-muted-foreground">{label}</p>
             </div>
           ))}
         </div>
 
-        <h2 className="mb-4 mt-10 text-xl font-bold">Your campaigns</h2>
+        <h2 className="mb-3 mt-8 text-lg font-bold">Your campaigns</h2>
         {mine.length === 0 ? (
           <EmptyState
             title="Your first collaboration starts here."
@@ -109,7 +109,7 @@ function Dashboard() {
         <Progress value={80} className="mt-3" />
       </div>
 
-      <h2 className="mb-4 text-xl font-bold">Recommended for you</h2>
+      <h2 className="mb-4 text-lg font-bold">Recommended for you</h2>
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {recommended.map((c) => (
           <CampaignCard
@@ -122,7 +122,7 @@ function Dashboard() {
         ))}
       </div>
 
-      <h2 className="mb-4 mt-10 text-xl font-bold">Your applications</h2>
+      <h2 className="mb-3 mt-8 text-lg font-bold">Your applications</h2>
       {mine.length === 0 ? (
         <EmptyState
           title="You haven't applied to any campaigns yet."
@@ -152,7 +152,7 @@ function Dashboard() {
         </ul>
       )}
 
-      <h2 className="mb-4 mt-10 text-xl font-bold">Saved campaigns</h2>
+      <h2 className="mb-3 mt-8 text-lg font-bold">Saved campaigns</h2>
       {savedCampaigns.length === 0 ? (
         <EmptyState
           title="Nothing saved yet"
