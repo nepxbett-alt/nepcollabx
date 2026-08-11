@@ -11,8 +11,10 @@ import {
   Users,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { Logo } from "@/components/Logo";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
+
 
 const creatorNav = [
   { to: "/dashboard", label: "Home", icon: Home },
