@@ -80,7 +80,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#1b1c26" },
+      { name: "theme-color", content: "#12295c" },
       { name: "author", content: "NepCollab" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

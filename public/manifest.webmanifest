@@ -3,15 +3,13 @@
   "short_name": "NepCollab",
   "description": "Brands post campaigns. Creators discover opportunities and apply.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#1b1c26",
-  "theme_color": "#1b1c26",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#12295c",
   "icons": [
-    {
-      "src": "/app-icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "/app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
