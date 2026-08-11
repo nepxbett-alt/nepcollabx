@@ -46,7 +46,7 @@ function Collaborations() {
                 <Link
                   to="/collaborations/$collabId"
                   params={{ collabId: co.id }}
-                  className="block rounded-3xl border border-border bg-card p-5 transition-shadow hover:shadow-md"
+                  className="block rounded-2xl border border-border bg-card p-5 transition-shadow hover:shadow-md"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">

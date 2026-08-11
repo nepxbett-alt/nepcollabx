@@ -128,7 +128,7 @@ function CampaignDetail() {
             </p>
           </section>
 
-          <section className="rounded-3xl border border-signal/40 bg-accent/50 p-5">
+          <section className="rounded-2xl border border-signal/40 bg-accent/50 p-5">
             <h2 className="flex items-center gap-2 text-lg font-bold">
               <Gift className="size-5" /> What you get
             </h2>
@@ -212,7 +212,7 @@ function CampaignDetail() {
         </div>
 
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="space-y-4 rounded-3xl border border-border bg-card p-5 shadow-sm">
+          <div className="space-y-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
             <div className="space-y-2 text-sm">
               <p className="flex items-center gap-2">
                 <MapPin className="size-4 text-muted-foreground" />
@@ -289,7 +289,7 @@ function CampaignDetail() {
             </div>
           </div>
 
-          <div className="mt-4 rounded-3xl border border-border bg-card p-5">
+          <div className="mt-4 rounded-2xl border border-border bg-card p-5">
             <p className="text-sm font-semibold">{brand?.name}</p>
             <p className="mt-1 text-sm text-muted-foreground">
               {brand?.description}

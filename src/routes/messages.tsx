@@ -70,7 +70,7 @@ function Messages() {
         })}
       </div>
 
-      <div className="flex min-h-[60vh] flex-col rounded-3xl border border-border bg-card">
+      <div className="flex min-h-[60vh] flex-col rounded-2xl border border-border bg-card">
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
           {active?.messages.map((m) => (
             <div

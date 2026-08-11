@@ -154,7 +154,7 @@ function NewCampaign() {
       <PageHeader title="Create campaign" subtitle={`Step ${step + 1} of ${STEPS.length} · ${STEPS[step]}`} />
       <Progress value={((step + 1) / STEPS.length) * 100} className="mb-8" />
 
-      <div className="space-y-5 rounded-3xl border border-border bg-card p-6">
+      <div className="space-y-5 rounded-2xl border border-border bg-card p-6">
         {step === 0 ? (
           <>
             <div>

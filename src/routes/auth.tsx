@@ -40,7 +40,7 @@ function AuthPage() {
 
   return (
     <Container className="max-w-md py-12">
-      <h1 className="text-3xl font-bold">Get started</h1>
+      <h1 className="text-xl font-bold">Get started</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Choose how you'll use NepCollab. You can explore the whole app either way.
       </p>
@@ -55,7 +55,7 @@ function AuthPage() {
             type="button"
             onClick={() => setRole(option.key)}
             className={cn(
-              "rounded-3xl border p-4 text-left transition-all",
+              "rounded-2xl border p-4 text-left transition-all",
               role === option.key
                 ? "border-signal bg-accent/60 shadow-sm"
                 : "border-border bg-card hover:border-foreground/30",

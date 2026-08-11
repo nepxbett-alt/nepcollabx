@@ -99,7 +99,7 @@ function Dashboard() {
         subtitle="Here are the opportunities that fit you best right now."
       />
 
-      <div className="mb-8 rounded-3xl border border-border bg-card p-5">
+      <div className="mb-8 rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center justify-between text-sm font-medium">
           <span>Profile 80% complete</span>
           <Link to="/profile" className="text-signal hover:underline">

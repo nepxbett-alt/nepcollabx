@@ -66,7 +66,7 @@ function Workspace() {
         <h2 className="mb-3 mt-8 text-xl font-bold">Deliverables</h2>
         <ul className="space-y-3">
           {collab.deliverables.map((d) => (
-            <li key={d.id} className="rounded-3xl border border-border bg-card p-4">
+            <li key={d.id} className="rounded-2xl border border-border bg-card p-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold">{d.title}</p>
@@ -160,7 +160,7 @@ function Workspace() {
       </div>
 
       <aside className="space-y-4">
-        <div className="rounded-3xl border border-border bg-card p-5">
+        <div className="rounded-2xl border border-border bg-card p-5">
           <p className="text-sm font-semibold">Participants</p>
           <div className="mt-3 space-y-3 text-sm">
             <div className="flex items-center gap-2">
@@ -173,7 +173,7 @@ function Workspace() {
             </div>
           </div>
         </div>
-        <div className="rounded-3xl border border-border bg-card p-5">
+        <div className="rounded-2xl border border-border bg-card p-5">
           <p className="text-sm font-semibold">Activity</p>
           <ol className="mt-3 space-y-3">
             {collab.timeline.map((t) => (
