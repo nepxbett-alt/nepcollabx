@@ -39,8 +39,10 @@ function AuthPage() {
   };
 
   return (
-    <Container className="max-w-md py-12">
-      <h1 className="text-xl font-bold">Get started</h1>
+    <Container className="max-w-md py-10">
+      <Logo size={40} withWordmark={false} />
+      <h1 className="mt-4 text-xl font-bold">Get started</h1>
+
       <p className="mt-1 text-sm text-muted-foreground">
         Choose how you'll use NepCollab. You can explore the whole app either way.
       </p>
