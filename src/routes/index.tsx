@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Gift, Search, Send, Sparkles, Trophy } from "lucide-react";
 import { Container } from "@/components/AppShell";
 import { CampaignCard } from "@/components/CampaignCard";
+import { Logo } from "@/components/Logo";
+
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
 
