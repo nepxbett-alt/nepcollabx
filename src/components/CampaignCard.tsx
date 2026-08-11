@@ -44,7 +44,7 @@ export function CampaignCard({
             </span>
           </div>
           {typeof match === "number" ? (
-            <span className="absolute right-2.5 top-2.5 rounded-full bg-signal px-2 py-0.5 text-[11px] font-bold text-signal-foreground">
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-signal px-2 py-0.5 text-[11px] font-bold text-signal-foreground">
               {match}% match
             </span>
           ) : null}
