@@ -109,7 +109,7 @@ function CampaignDetail() {
         </Container>
       </div>
 
-      <Container className="grid gap-8 lg:grid-cols-[1fr_340px]">
+      <Container className="grid gap-8 pb-24 lg:grid-cols-[1fr_340px] lg:pb-5">
         <div className="space-y-8">
           <div className="flex flex-wrap gap-2">
             <StatusBadge status={campaign.status} />
