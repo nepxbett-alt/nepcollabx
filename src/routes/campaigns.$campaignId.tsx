@@ -302,6 +302,38 @@ function CampaignDetail() {
           </div>
         </aside>
       </Container>
+
+      {/* Mobile sticky apply bar */}
+      {role !== "brand" && !application ? (
+        <div
+          className={cn(
+            "fixed inset-x-0 z-40 border-t border-border bg-background/95 px-4 py-3 backdrop-blur-xl lg:hidden",
+            signedIn
+              ? "bottom-[calc(3.75rem+env(safe-area-inset-bottom))]"
+              : "bottom-0 pb-[calc(0.75rem+env(safe-area-inset-bottom))]",
+          )}
+        >
+          <div className="mx-auto flex max-w-lg items-center gap-3">
+            <button
+              type="button"
+              aria-label={isSaved ? "Remove from saved" : "Save campaign"}
+              aria-pressed={isSaved}
+              onClick={() => toggleSaved(campaign.id)}
+              className="tap flex size-12 shrink-0 items-center justify-center rounded-full border border-border"
+            >
+              <Bookmark className={cn("size-5", isSaved && "fill-signal text-signal")} />
+            </button>
+            <Link
+              to="/campaigns/$campaignId/apply"
+              params={{ campaignId: campaign.id }}
+              className="tap flex h-12 flex-1 items-center justify-center rounded-full bg-signal text-[15px] font-semibold text-signal-foreground hover:bg-signal/90"
+            >
+              Apply now
+            </Link>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
+
