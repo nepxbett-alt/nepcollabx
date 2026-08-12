@@ -36,41 +36,69 @@ function isActive(pathname: string, to: string) {
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { role, signedIn, notifications } = useStore();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  const pathname = useRouterState({
+    select: (s) => s.location.pathname,
+  });
+
   const nav = role === "brand" ? brandNav : creatorNav;
+
   const unread = notifications.filter(
     (n) => n.audience === (role ?? "creator") && !n.read,
   ).length;
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+      {/* Mobile / public app header */}
+      <header
+        className={cn(
+          "sticky top-0 z-40",
+          "border-b border-border/60",
+          "bg-background/90 backdrop-blur-xl",
+          "supports-[backdrop-filter]:bg-background/75",
+          "pt-[env(safe-area-inset-top)]",
+        )}
+      >
         <div
           className={cn(
-            "mx-auto flex h-13 w-full items-center justify-between gap-3 px-4",
+            "mx-auto flex h-14 w-full items-center justify-between gap-3 px-4",
             signedIn ? "max-w-7xl lg:pl-[248px]" : "max-w-6xl",
           )}
         >
           <Link
             to={signedIn ? "/dashboard" : "/"}
-            className="flex min-w-0 items-center lg:opacity-0 lg:pointer-events-none"
+            className={cn(
+              "flex min-w-0 items-center",
+              signedIn && "lg:pointer-events-none lg:opacity-0",
+            )}
             aria-label="NepCollab home"
           >
             <Logo />
           </Link>
 
-          <div className="flex shrink-0 items-center gap-1.5">
+          <div className="flex shrink-0 items-center gap-1">
             {signedIn ? (
               <Link
                 to="/notifications"
                 aria-label={
-                  unread > 0 ? `Notifications, ${unread} unread` : "Notifications"
+                  unread > 0
+                    ? `Notifications, ${unread} unread`
+                    : "Notifications"
                 }
-                className="tap relative flex size-10 items-center justify-center rounded-full text-foreground hover:bg-secondary"
+                className={cn(
+                  "tap relative flex size-11 items-center justify-center",
+                  "rounded-full text-foreground",
+                  "hover:bg-secondary",
+                  "focus-visible:bg-secondary",
+                )}
               >
                 <Bell className="size-[19px]" />
+
                 {unread > 0 ? (
-                  <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-signal ring-2 ring-background" />
+                  <span
+                    aria-hidden="true"
+                    className="absolute right-2.5 top-2.5 size-2 rounded-full bg-signal ring-2 ring-background"
+                  />
                 ) : null}
               </Link>
             ) : (
@@ -85,15 +113,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
+      {/* Desktop sidebar */}
       {signedIn ? (
         <aside className="fixed inset-y-0 left-0 z-50 hidden w-[248px] flex-col border-r border-border bg-card px-4 py-5 lg:flex">
-          <Link to="/dashboard" className="mb-6 flex items-center px-2" aria-label="NepCollab home">
+          <Link
+            to="/dashboard"
+            className="mb-6 flex items-center px-2"
+            aria-label="NepCollab home"
+          >
             <Logo />
           </Link>
+
           <nav aria-label="Primary" className="flex flex-col gap-1">
             {nav.map((item) => {
               const active = isActive(pathname, item.to);
               const Icon = item.icon;
+
               return (
                 <Link
                   key={item.to}
@@ -106,8 +141,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                       : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
                   )}
                 >
-                  <Icon className={cn("size-[18px]", active && "text-signal")} />
-                  {item.label}
+                  <Icon
+                    className={cn(
+                      "size-[18px]",
+                      active && "text-signal",
+                    )}
+                  />
+
+                  <span>{item.label}</span>
                 </Link>
               );
             })}
@@ -115,49 +156,73 @@ export function AppShell({ children }: { children: ReactNode }) {
         </aside>
       ) : null}
 
+      {/* Main content */}
       <main
         className={cn(
-          "flex-1 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-10",
+          "min-w-0 flex-1",
+          "pb-[calc(5rem+env(safe-area-inset-bottom))]",
+          "md:pb-10",
           signedIn && "lg:pl-[248px]",
         )}
       >
         {children}
       </main>
 
+      {/* Mobile bottom navigation */}
       {signedIn ? (
         <nav
           aria-label="Primary"
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl lg:hidden"
+          className={cn(
+            "fixed inset-x-0 bottom-0 z-50 lg:hidden",
+            "border-t border-border/80",
+            "bg-background/95 backdrop-blur-xl",
+            "supports-[backdrop-filter]:bg-background/80",
+            "pb-[env(safe-area-inset-bottom)]",
+          )}
         >
-          <ul className="mx-auto flex max-w-lg items-stretch">
+          <ul className="mx-auto flex w-full max-w-lg items-stretch px-1">
             {nav.map((item) => {
               const active = isActive(pathname, item.to);
               const Icon = item.icon;
+
               return (
-                <li key={item.to} className="flex-1">
+                <li key={item.to} className="min-w-0 flex-1">
                   <Link
                     to={item.to}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "tap flex min-h-12 flex-col items-center justify-center gap-1 py-2 text-[10px] font-medium",
-                      active ? "text-signal" : "text-muted-foreground",
+                      "tap flex min-h-[60px] flex-col items-center justify-center",
+                      "gap-1 px-1 py-2",
+                      "text-[10px] font-medium",
+                      "select-none",
+                      active
+                        ? "text-signal"
+                        : "text-muted-foreground",
                     )}
                   >
                     <span
                       className={cn(
-                        "flex h-6 w-11 items-center justify-center rounded-full transition-colors",
+                        "flex h-7 w-12 items-center justify-center rounded-full",
+                        "transition-colors duration-200",
                         active && "bg-signal/10",
                       )}
                     >
-                      <Icon className={cn("size-[19px]", active && "stroke-[2.4]")} />
+                      <Icon
+                        className={cn(
+                          "size-[19px]",
+                          active && "stroke-[2.5]",
+                        )}
+                      />
                     </span>
-                    {item.label}
+
+                    <span className="max-w-full truncate px-1">
+                      {item.label}
+                    </span>
                   </Link>
                 </li>
               );
             })}
           </ul>
-          <div className="h-[env(safe-area-inset-bottom)]" />
         </nav>
       ) : null}
     </div>
@@ -179,10 +244,14 @@ export function PageHeader({
         <h1 className="truncate text-[22px] font-bold tracking-tight sm:text-2xl">
           {title}
         </h1>
+
         {subtitle ? (
-          <p className="mt-0.5 text-[13px] text-muted-foreground">{subtitle}</p>
+          <p className="mt-0.5 text-[13px] text-muted-foreground">
+            {subtitle}
+          </p>
         ) : null}
       </div>
+
       {action}
     </div>
   );
@@ -202,11 +271,15 @@ export function SectionHeader({
   return (
     <div className="mb-3 flex items-end justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="truncate text-[17px] font-bold tracking-tight">{title}</h2>
+        <h2 className="truncate text-[17px] font-bold tracking-tight">
+          {title}
+        </h2>
+
         {hint ? (
           <p className="text-[12.5px] text-muted-foreground">{hint}</p>
         ) : null}
       </div>
+
       {actionLabel && actionTo ? (
         <Link
           {...({ to: actionTo } as unknown as { to: "/" })}
@@ -227,7 +300,12 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-5xl px-4 py-5", className)}>
+    <div
+      className={cn(
+        "mx-auto w-full max-w-5xl px-4 py-5 sm:px-5",
+        className,
+      )}
+    >
       {children}
     </div>
   );
