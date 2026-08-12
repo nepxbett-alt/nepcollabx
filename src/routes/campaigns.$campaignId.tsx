@@ -65,6 +65,8 @@ function CampaignDetail() {
     toggleSaved,
     currentCreatorId,
     role,
+    signedIn,
+
   } = useStore();
   const campaign = campaigns.find((c) => c.id === campaignId);
   if (!campaign) throw notFound();
