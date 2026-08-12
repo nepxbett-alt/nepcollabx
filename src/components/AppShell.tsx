@@ -3,7 +3,6 @@ import {
   Bell,
   Compass,
   FileText,
-  Handshake,
   Home,
   LayoutGrid,
   MessageCircle,
@@ -15,28 +14,29 @@ import { Logo } from "@/components/Logo";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
-
 const creatorNav = [
   { to: "/dashboard", label: "Home", icon: Home },
   { to: "/campaigns", label: "Discover", icon: Compass },
   { to: "/applications", label: "Applications", icon: FileText },
-  { to: "/collaborations", label: "Collabs", icon: Handshake },
+  { to: "/messages", label: "Messages", icon: MessageCircle },
   { to: "/profile", label: "Profile", icon: User },
 ] as const;
 
 const brandNav = [
   { to: "/dashboard", label: "Home", icon: Home },
   { to: "/brand/campaigns", label: "Campaigns", icon: LayoutGrid },
-  { to: "/brand/applicants", label: "Applicants", icon: Users },
+  { to: "/brand/applicants", label: "Applications", icon: Users },
   { to: "/messages", label: "Messages", icon: MessageCircle },
   { to: "/profile", label: "Profile", icon: User },
 ] as const;
 
+function isActive(pathname: string, to: string) {
+  return pathname === to || pathname.startsWith(`${to}/`);
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { role, signedIn, notifications } = useStore();
-  const pathname = useRouterState({
-    select: (s) => s.location.pathname,
-  });
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const nav = role === "brand" ? brandNav : creatorNav;
   const unread = notifications.filter(
     (n) => n.audience === (role ?? "creator") && !n.read,
@@ -44,57 +44,39 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4">
-          <Link to="/" className="flex min-w-0 items-center" aria-label="NepCollab home">
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+        <div
+          className={cn(
+            "mx-auto flex h-13 w-full items-center justify-between gap-3 px-4",
+            signedIn ? "max-w-7xl lg:pl-[248px]" : "max-w-6xl",
+          )}
+        >
+          <Link
+            to={signedIn ? "/dashboard" : "/"}
+            className="flex min-w-0 items-center lg:opacity-0 lg:pointer-events-none"
+            aria-label="NepCollab home"
+          >
             <Logo />
           </Link>
-
-          <nav className="hidden items-center gap-1 md:flex">
-            {signedIn ? (
-              nav.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground data-[status=active]:bg-secondary data-[status=active]:text-foreground"
-                >
-                  {item.label}
-                </Link>
-              ))
-            ) : (
-              <>
-                <Link
-                  to="/campaigns"
-                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                >
-                  Discover
-                </Link>
-                <Link
-                  to="/auth"
-                  className="tap rounded-full px-3 py-1.5 text-[13px] font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-                >
-                  Post a campaign
-                </Link>
-              </>
-            )}
-          </nav>
 
           <div className="flex shrink-0 items-center gap-1.5">
             {signedIn ? (
               <Link
                 to="/notifications"
-                aria-label="Notifications"
-                className="tap relative flex size-9 items-center justify-center rounded-full text-foreground hover:bg-secondary"
+                aria-label={
+                  unread > 0 ? `Notifications, ${unread} unread` : "Notifications"
+                }
+                className="tap relative flex size-10 items-center justify-center rounded-full text-foreground hover:bg-secondary"
               >
-                <Bell className="size-[18px]" />
+                <Bell className="size-[19px]" />
                 {unread > 0 ? (
-                  <span className="absolute right-2 top-2 size-2 rounded-full bg-signal ring-2 ring-background" />
+                  <span className="absolute right-2.5 top-2.5 size-2 rounded-full bg-signal ring-2 ring-background" />
                 ) : null}
               </Link>
             ) : (
               <Link
                 to="/auth"
-                className="tap rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold text-ink-foreground hover:opacity-90"
+                className="tap rounded-full bg-ink px-4 py-2 text-[13px] font-semibold text-ink-foreground hover:opacity-90"
               >
                 Get started
               </Link>
@@ -103,19 +85,53 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
 
-      <main className="flex-1 pb-[calc(4.25rem+env(safe-area-inset-bottom))] md:pb-10">
+      {signedIn ? (
+        <aside className="fixed inset-y-0 left-0 z-50 hidden w-[248px] flex-col border-r border-border bg-card px-4 py-5 lg:flex">
+          <Link to="/dashboard" className="mb-6 flex items-center px-2" aria-label="NepCollab home">
+            <Logo />
+          </Link>
+          <nav aria-label="Primary" className="flex flex-col gap-1">
+            {nav.map((item) => {
+              const active = isActive(pathname, item.to);
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "tap flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium",
+                    active
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                  )}
+                >
+                  <Icon className={cn("size-[18px]", active && "text-signal")} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
+      ) : null}
+
+      <main
+        className={cn(
+          "flex-1 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-10",
+          signedIn && "lg:pl-[248px]",
+        )}
+      >
         {children}
       </main>
 
       {signedIn ? (
         <nav
           aria-label="Primary"
-          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl md:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 backdrop-blur-xl lg:hidden"
         >
           <ul className="mx-auto flex max-w-lg items-stretch">
             {nav.map((item) => {
-              const active =
-                pathname === item.to || pathname.startsWith(`${item.to}/`);
+              const active = isActive(pathname, item.to);
               const Icon = item.icon;
               return (
                 <li key={item.to} className="flex-1">
@@ -123,11 +139,18 @@ export function AppShell({ children }: { children: ReactNode }) {
                     to={item.to}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "tap flex min-h-11 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium",
+                      "tap flex min-h-12 flex-col items-center justify-center gap-1 py-2 text-[10px] font-medium",
                       active ? "text-signal" : "text-muted-foreground",
                     )}
                   >
-                    <Icon className={cn("size-[19px]", active && "stroke-[2.4]")} />
+                    <span
+                      className={cn(
+                        "flex h-6 w-11 items-center justify-center rounded-full transition-colors",
+                        active && "bg-signal/10",
+                      )}
+                    >
+                      <Icon className={cn("size-[19px]", active && "stroke-[2.4]")} />
+                    </span>
                     {item.label}
                   </Link>
                 </li>
@@ -151,9 +174,9 @@ export function PageHeader({
   action?: ReactNode;
 }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-5">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 pb-4">
       <div className="min-w-0">
-        <h1 className="truncate text-xl font-bold tracking-tight sm:text-2xl">
+        <h1 className="truncate text-[22px] font-bold tracking-tight sm:text-2xl">
           {title}
         </h1>
         {subtitle ? (
@@ -161,6 +184,37 @@ export function PageHeader({
         ) : null}
       </div>
       {action}
+    </div>
+  );
+}
+
+export function SectionHeader({
+  title,
+  hint,
+  actionLabel,
+  actionTo,
+}: {
+  title: string;
+  hint?: string;
+  actionLabel?: string;
+  actionTo?: string;
+}) {
+  return (
+    <div className="mb-3 flex items-end justify-between gap-3">
+      <div className="min-w-0">
+        <h2 className="truncate text-[17px] font-bold tracking-tight">{title}</h2>
+        {hint ? (
+          <p className="text-[12.5px] text-muted-foreground">{hint}</p>
+        ) : null}
+      </div>
+      {actionLabel && actionTo ? (
+        <Link
+          {...({ to: actionTo } as unknown as { to: "/" })}
+          className="shrink-0 text-[13px] font-semibold text-signal hover:underline"
+        >
+          {actionLabel}
+        </Link>
+      ) : null}
     </div>
   );
 }
@@ -173,9 +227,8 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-6xl px-4 py-5", className)}>
+    <div className={cn("mx-auto w-full max-w-5xl px-4 py-5", className)}>
       {children}
     </div>
   );
 }
-
