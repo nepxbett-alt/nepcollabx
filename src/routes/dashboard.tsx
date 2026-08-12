@@ -41,7 +41,7 @@ function greeting() {
   return "Good evening";
 }
 
-function Greeting({ name, sub }: { name?: string; sub: string }) {
+function Greeting({ name, sub }: { name?: string | undefined; sub: string }) {
   return (
     <div className="pb-5">
       <p className="text-[13px] text-muted-foreground">
