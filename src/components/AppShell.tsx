@@ -195,7 +195,7 @@ export function SectionHeader({
   actionTo,
 }: {
   title: string;
-  hint?: string;
+  hint?: string | undefined;
   actionLabel?: string;
   actionTo?: string;
 }) {
