@@ -1,10 +1,9 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Briefcase, Sparkles } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Briefcase, CheckCircle2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Container } from "@/components/AppShell";
 import { Logo } from "@/components/Logo";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,44 +15,49 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — NepCollab" },
-      {
-        name: "description",
-        content: "Join NepCollab as a creator looking for collaborations or a brand publishing campaigns.",
-      },
-      { property: "og:title", content: "Sign in — NepCollab" },
-      { property: "og:description", content: "Creators find opportunities. Brands publish campaigns." },
+      { name: "description", content: "Passwordless sign in for NepCollab creators and brands." },
     ],
   }),
   component: AuthPage,
 });
 
 function AuthPage() {
-  const navigate = useNavigate();
-  const { signIn } = useStore();
+  const { requestMagicLink } = useStore();
   const [role, setRole] = useState<Role>("creator");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    signIn(role);
-    toast.success(role === "brand" ? "Welcome, brand!" : "Welcome, creator!");
-    navigate({ to: "/dashboard" });
+    setBusy(true);
+    try {
+      await requestMagicLink(email, role, name);
+      setSent(true);
+      toast.success("Magic link sent. Check your email.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Unable to send the magic link.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
     <Container className="max-w-md py-10">
       <Logo size={40} withWordmark={false} />
       <h1 className="mt-4 text-xl font-bold">Get started</h1>
-
       <p className="mt-1 text-sm text-muted-foreground">
-        Choose how you'll use NepCollab. You can explore the whole app either way.
+        No password. We'll email you a secure sign-in link.
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3">
-        {([
-          { key: "creator", label: "I'm a Creator", body: "Find and apply to campaigns", icon: Sparkles },
-          { key: "brand", label: "I'm a Brand", body: "Publish campaigns, pick creators", icon: Briefcase },
-        ] as const).map((option) => (
+        {(
+          [
+            { key: "creator", label: "I'm a Creator", body: "Find and apply to campaigns", icon: Sparkles },
+            { key: "brand", label: "I'm a Brand", body: "Publish campaigns, pick creators", icon: Briefcase },
+          ] as const
+        ).map((option) => (
           <button
             key={option.key}
             type="button"
@@ -72,34 +76,47 @@ function AuthPage() {
         ))}
       </div>
 
-      <form onSubmit={submit} className="mt-6 space-y-4">
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="mt-2"
-          />
+      {!sent ? (
+        <form onSubmit={submit} className="mt-6 space-y-4">
+          <div>
+            <Label htmlFor="name">{role === "brand" ? "Brand name" : "Your name"}</Label>
+            <Input
+              id="name"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={role === "brand" ? "Acme Nepal" : "Your full name"}
+              className="mt-2"
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="mt-2"
+            />
+          </div>
+          <Button disabled={busy} type="submit" size="lg" className="w-full rounded-full">
+            {busy ? "Sending…" : "Send magic link"}
+          </Button>
+        </form>
+      ) : (
+        <div className="mt-8 rounded-2xl border bg-card p-6 text-center">
+          <CheckCircle2 className="mx-auto size-10" />
+          <h2 className="mt-4 font-semibold">Check your email</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            We sent a secure link to <strong>{email}</strong>. Open it on this device to continue.
+          </p>
+          <Button variant="outline" className="mt-5 rounded-full" onClick={() => setSent(false)}>
+            Use another email
+          </Button>
         </div>
-        <div>
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" type="password" required className="mt-2" placeholder="••••••••" />
-        </div>
-        <Button type="submit" size="lg" className="w-full rounded-full">
-          Continue as {role}
-        </Button>
-        <Button type="button" variant="outline" size="lg" className="w-full rounded-full" onClick={submit}>
-          Continue with Google
-        </Button>
-      </form>
-
-      <p className="mt-6 text-center text-xs text-muted-foreground">
-        This preview stores your role locally. No account is created yet.
-      </p>
+      )}
     </Container>
   );
 }
