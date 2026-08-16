@@ -201,6 +201,56 @@ export type Database = {
           },
         ]
       }
+      collaboration_deliverables: {
+        Row: {
+          collaboration_id: string
+          created_at: string
+          id: string
+          reviewed_at: string | null
+          sort_order: number
+          status: string
+          submission_link: string | null
+          submission_note: string | null
+          submitted_at: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          collaboration_id: string
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          sort_order?: number
+          status?: string
+          submission_link?: string | null
+          submission_note?: string | null
+          submitted_at?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          collaboration_id?: string
+          created_at?: string
+          id?: string
+          reviewed_at?: string | null
+          sort_order?: number
+          status?: string
+          submission_link?: string | null
+          submission_note?: string | null
+          submitted_at?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collaboration_deliverables_collaboration_id_fkey"
+            columns: ["collaboration_id"]
+            isOneToOne: false
+            referencedRelation: "collaborations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       collaborations: {
         Row: {
           agreed_budget: number | null
@@ -662,6 +712,10 @@ export type Database = {
     Functions: {
       accept_application: { Args: { _application_id: string }; Returns: string }
       current_role_is: { Args: { _role: string }; Returns: boolean }
+      in_collaboration: {
+        Args: { _collaboration_id: string }
+        Returns: boolean
+      }
       in_conversation: { Args: { _conversation_id: string }; Returns: boolean }
       owns_campaign: { Args: { _campaign_id: string }; Returns: boolean }
       push_notification: {
